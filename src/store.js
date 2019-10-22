@@ -27,7 +27,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getQuestions({ state, commit, dispatch }) {
+    getQuestions({ state, commit }) {
       let random = Math.round(Math.random() * 69999999);
       firebase
         .firestore()
@@ -53,6 +53,12 @@ export default new Vuex.Store({
         .catch(function(error) {
           console.log("Error getting documents: ", error);
         });
+    },
+    sendQuestionToFirestore({ state, commit, dispatch }, question) {
+      return firebase
+        .firestore()
+        .collection("questions")
+        .add(question);
     }
   }
 });
