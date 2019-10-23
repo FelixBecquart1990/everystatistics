@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from "./apis/firebase";
+import { findAll } from "./apis/algolia";
 
 Vue.use(Vuex);
 
@@ -32,7 +32,7 @@ export default new Vuex.Store({
   actions: {
     async getQuestions({ state, commit, dispatch }) {
       try {
-        const questions = indexify(deserialize(await requestFirebase('questions')));
+        const questions = await findAll('dev_questions');
         commit('setQuestions', questions);
         commit("setLoading", false);
       }
@@ -42,65 +42,3 @@ export default new Vuex.Store({
     }
   }
 });
-
-
-/**
- * @name requestAlgolia
- * @description Request data from Algolia
- * @param {*} collection 
- */
-async function requestAlgolia(collection) {
-
-}
-
-
-/**
- * @name requestFirebase
- * @description Request data from Firebase
- * @param {*} collection The collection's name
- */
-async function requestFirebase(collection) {
-  let results;
-  try {
-    results = await firebase.firestore()
-      .collection(collection)
-      .orderBy("random", "asc")
-      .startAfter(Math.round(Math.random() * 69999999))
-      .limit(4)
-      .get();
-    return results.docs;
-  }
-
-  catch(error) {
-    throw `An error occured while requesting the collection '${collection}' from Firebase: ${error}`;
-  }
-}
-
-
-/**
- * @name deserialize
- * @description Deserilize data from API into the store
- * @param {*} data
- */
-function deserialize(data) {
-  if(Array.isArray(data)) {
-    return data.map(d => deserialize(d));
-  }
-
-  return { ...{ id: data.id }, ...data.data() };
-}
-
-
-/**
- * @name indexify
- * @description Assign an index to an array's items
- * @param {*} data The object of object's array to assign an index 
- * @param {*} index The index to assign to data's items
- */
-function indexify(data, index) {
-  if(Array.isArray(data)) {
-    return data.map((d, i) => indexify(d, i));
-  }
-
-  return Object.assign({ index }, data);
-}

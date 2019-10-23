@@ -24,7 +24,7 @@ export default {
   computed: {
     ...mapState(["loading", "questions"])
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

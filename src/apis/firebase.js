@@ -21,3 +21,39 @@ firebase.initializeApp(config);
 // firebase.analytics();
 
 export default firebase;
+
+
+
+/**
+ * @name findAll
+ * @description Find all record of {collection} from Firebase
+ * @param {*} collection The collection's name
+ */
+export async function findAll(collection) {
+  try {
+    const results = await firebase.firestore()
+      .collection(collection)
+      .orderBy("random", "asc")
+      .startAfter(Math.round(Math.random() * 69999999))
+      .limit(4)
+      .get();
+    return deserialize(results.docs);
+  }
+
+  catch(error) {
+    throw `An error occured while requesting the collection '${collection}' from Firebase: ${error}`;
+  }
+}
+
+/**
+ * @name deserialize
+ * @description Deserilize data from Firebase's API
+ * @param {*} data
+ */
+export function deserialize(data) {
+  if(Array.isArray(data)) {
+    return data.map(d => deserialize(d));
+  }
+
+  return { ...{ id: data.id }, ...data.data() };
+}
