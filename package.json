@@ -8,11 +8,14 @@
     "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
+    "algoliasearch": "^3.35.1",
     "core-js": "^2.6.5",
-    "firebase": "^7.2.0",
+    "dotenv": "^8.2.0",
+    "firebase": "^7.2.1",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
+    "vue-instantsearch": "^2.6.0",
     "vue-router": "^3.0.3",
     "vuetify": "^2.1.0",
     "vuex": "^3.0.1"

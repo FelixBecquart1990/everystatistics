@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import firebase from "../firebaseConfig.js";
+import firebase from "./../apis/firebase";
 
 export default {
   props: ["question", "index"],
