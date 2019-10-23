@@ -8,14 +8,15 @@ export default client;
 
 
 /**
- * @name findAll
- * @description Find all records of {collection} from Algolia
- * @param {*} collection 
+ * @name search
+ * @description Search records of {collection} from Algolia for {value}
+ * @param {*} collection The collection's name
+ * @param {} value The string value to search
  */
-export async function findAll(collection) {
+export async function find(collection, value = '') {
     const index = client.initIndex(collection);
     try {
-        const results = await index.search('');
+        const results = await index.search(value);
         return deserialize(results.hits);
     }
     catch (error) {

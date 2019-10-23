@@ -1,13 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { findAll } from "./apis/algolia";
+import { find } from "./apis/algolia";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    questions: ["0", "1", "3", "4"],
-    loading: true,
+    questions: [],
     snackbar: { active: false, color: "", mode: "", timeout: 0, text: "" }
   },
   mutations: {
@@ -20,9 +19,6 @@ export default new Vuex.Store({
     setSnackbar(state, val) {
       state.snackbar = Object.assign({}, val, { active: true });
     },
-    setLoading(state, val) {
-      state.loading = val;
-    }
   },
   getters: {
     questions: state => {
@@ -32,9 +28,8 @@ export default new Vuex.Store({
   actions: {
     async getQuestions({ state, commit, dispatch }) {
       try {
-        const questions = await findAll('dev_questions');
+        const questions = await find('dev_questions');
         commit('setQuestions', questions);
-        commit("setLoading", false);
       }
       catch (error) {
         console.log('[ERR]', error);

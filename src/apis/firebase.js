@@ -25,11 +25,12 @@ export default firebase;
 
 
 /**
- * @name findAll
- * @description Find all record of {collection} from Firebase
+ * @name find
+ * @description Find records of {collection} from Firebase for {value}
  * @param {*} collection The collection's name
+ * @param {} value The string value to search
  */
-export async function findAll(collection) {
+export async function find(collection, value = '') {
   try {
     const results = await firebase.firestore()
       .collection(collection)
