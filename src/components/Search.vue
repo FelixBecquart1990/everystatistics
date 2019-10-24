@@ -19,7 +19,7 @@
 
 <script>
 import firebase from "./../apis/firebase";
-import { find } from './../apis/algolia';
+import { find, save } from './../apis/algolia';
 import QuestionList from './question/list';
 
 export default {
@@ -48,17 +48,16 @@ export default {
         this._displayExistingQuestions(questions);
 
         if(!this._questionAlreadyExists(questions)) {
-          this._postQuestion(this.text);
+          await this._postQuestion(this.text);
         }
       } 
       catch (error) {
         console.log(error);
       }
-
     },
 
     /**
-     * @name isInputSearchEmpty
+     * @name _isInputSearchEmpty
      * @description Check if the input's value is empty
      */
     _isInputSearchEmpty() {
@@ -66,7 +65,7 @@ export default {
     },
 
     /**
-     * @name resetResults
+     * @name _resetResults
      * @description Result the current questions' result
      */
     _resetResults() {
@@ -74,7 +73,7 @@ export default {
     },
 
     /**
-     * @name findExistingQuestions
+     * @name _findExistingQuestions
      * @param {*} text The text to search into the questions
      */
     async _findExistingQuestions() {
@@ -87,7 +86,7 @@ export default {
     },
 
     /**
-     * @name displayExistingQuestions
+     * @name _displayExistingQuestions
      * @description Make existing question visible on the component
      * @param {*} questions An array of questions
      */
@@ -96,62 +95,26 @@ export default {
     },
 
     /**
-     * @name questionAlreadyExists
+     * @name _questionAlreadyExists
      * @description Does the question already exist
+     * @param {*} existingQuestions
      */
-    _questionAlreadyExists() {
-      return false;
+    _questionAlreadyExists(existingQuestions = []) {
+      return existingQuestions.length > 0;
     },
 
     /**
-     * @name displayExistingQuestions
-     * @description Make existing question visible on the component
+     * @name _postQuestion
+     * @description Send to the API the new question
      */
-    _postQuestion(text) {
-      const question = {
-        id: "tASarZKXEZKafrSTKYra",
-        objectID: "tASarZKXEZKafrSTKYra",
-        random: 77764413,
-        text: "ça fonctionne bien ?",
-      };
-      console.log('Please, post', question);
-      this.question = question;
-      this.questionAlreadyExists = true;
+    async _postQuestion(text) {
+      try {
+        const savedQuestion = await save('dev_questions', this.text);
+      }
+      catch (error) {
+        throw `[ERR] An error occured while searching questions: ${error}`;
+      }
     },
-
-    sendQuestion() {
-      if (this.loading || this.text == "") return;
-      this.loading = true;
-      let random = Math.round(Math.random() * 99999999);
-      let question = {
-        random: random,
-        created_at: firebase.firestore.FieldValue.serverTimestamp(),
-        text: this.text
-      };
-      this.text = "";
-      let self = this;
-      firebase
-        .firestore()
-        .collection("questions")
-        .add(question)
-        .then(function(newDocument) {
-          let newQuestion = Object.assign({}, question, { id: newDocument.id });
-          self.$store.commit("setQuestion", {
-            index: Math.floor(Math.random() * 4),
-            question: newQuestion
-          });
-          self.loading = false;
-          self.$store.commit("setSnackbar", {
-            color: "primary",
-            timeout: 3000,
-            text: "Question ajoutée"
-          });
-        })
-        .catch(err => {
-          self.loading = false;
-          console.log(err);
-        });
-    }
   }
 };
 </script>

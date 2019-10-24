@@ -25,6 +25,25 @@ export async function find(collection, value = '') {
 }
 
 
+
+/**
+ * @name search
+ * @description Save on Algolia's API a new record of {collection}
+ * @param {*} collection The collection's name
+ * @param {} value The string value to save
+ */
+export async function save(collection, value = '') {
+    const index = client.initIndex(collection);
+    try {
+        const record = await index.saveObjects([serialize(value)]);
+        return deserialize(record);
+    }
+    catch (error) {
+        throw `An error occured while saving ${value} to the collection '${collection}' on Algolia: ${error}`;
+    }
+}
+
+
 /**
  * @name deserialize
  * @description Deserilize data from Algolia's API
@@ -33,7 +52,17 @@ export async function find(collection, value = '') {
 export function deserialize(data) {
     if(Array.isArray(data)) {
         return data.map(d => deserialize(d));
-      }
+    }
 
     return { ...{ id: data.objectID }, ...data };
+}
+
+
+/**
+ * @name serialize
+ * @description Serilize the text to Algolia's API
+ * @param {*} text
+ */
+export function serialize(text) {
+    return { objectID: text, text };
 }
