@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import firebase from "./../apis/firebase";
+import firebase from "./../../apis/firebase";
 
 export default {
   props: ["question", "index"],
@@ -174,6 +174,9 @@ export default {
           console.log(err);
         });
     }
+  },
+  updated() {
+    console.log('updated??', this.question);
   }
 };
 </script>

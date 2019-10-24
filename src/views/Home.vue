@@ -1,17 +1,17 @@
 <template>
   <v-container>
     <Search />
-    <List />
+    <QuestionList />
   </v-container>
 </template>
 <script>
 import Search from "../components/Search";
-import List from "../components/List";
+import QuestionList from "../components/question/list";
 
 export default {
   components: {
     Search,
-    List
+    QuestionList
   }
 };
 </script>
