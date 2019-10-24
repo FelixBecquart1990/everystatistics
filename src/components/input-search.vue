@@ -56,14 +56,16 @@ export default {
         console.log(error);
       }
     },
+
     /**
      * @name onEscape
      * @description Handle the main process on cancelling a search
      */
-    async onEscape() {
+    onEscape() {
       this._resetResults();
       this._resetInputSearch();
     },
+
 
     /**
      * @name _isInputSearchEmpty
