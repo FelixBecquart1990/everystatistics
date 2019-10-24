@@ -13,7 +13,7 @@
         :loading="loading"
       ></v-text-field>
 
-      <QuestionList :questions="results" />
+      <QuestionList :questions="results" columns="12" />
     </v-col>
   </v-sheet>
 </template>

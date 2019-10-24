@@ -1,7 +1,7 @@
 <template>
   <!-- <v-container fluid> -->
     <v-row no-gutters>
-      <v-col v-for="(question, index) in questions" :key="'question-' + index" cols="12" sm="12">
+      <v-col v-for="(question, index) in questions" :key="'question-' + index" cols="12" v-bind:sm=columns>
         <v-skeleton-loader
           :loading="isLoading"
           transition="scale-transition"
@@ -21,7 +21,16 @@
 
   export default {
     data: () => ({ isLoading: true }),
-    props: ['questions', 'options'],
+    props: {
+      questions: {
+        type: Array,
+        default: [],
+      }, 
+      columns: {
+        type: String,
+        default: "6",
+      }
+    },
     components: { QuestionItem },
     methods: {},
     updated() {
