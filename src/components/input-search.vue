@@ -3,7 +3,8 @@
     <v-col cols="12" sm="6" md="6" lg="4">
       <v-text-field
         v-model="text"
-        @keyup.enter="onKeyupEnter()"
+        @keyup.enter="onEnter()"
+        @keyup.escape="onEscape()"
         class="mt-5 pt-5 mx-3"
         label="Solo"
         placeholder="Ajoutez votre question"
@@ -34,11 +35,11 @@ export default {
 
   methods: {
     /**
-     * @name onKeyupEnter
+     * @name onEnter
      * @description Handle the main process on searching 
      *              an existing question
      */
-    async onKeyupEnter() {
+    async onEnter() {
       if(this._isInputSearchEmpty()) {
         return this._resetResults();
       }
@@ -55,6 +56,14 @@ export default {
         console.log(error);
       }
     },
+    /**
+     * @name onEscape
+     * @description Handle the main process on cancelling a search
+     */
+    async onEscape() {
+      this._resetResults();
+      this._resetInputSearch();
+    },
 
     /**
      * @name _isInputSearchEmpty
@@ -70,6 +79,14 @@ export default {
      */
     _resetResults() {
       this.results = [];
+    },
+
+    /**
+     * @name _resetInputSearch
+     * @description Result the current questions' result
+     */
+    _resetInputSearch() {
+      this.text = '';
     },
 
     /**

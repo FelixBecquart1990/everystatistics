@@ -1,16 +1,17 @@
 <template>
   <v-container>
-    <Search />
+    <InputSearch />
     <QuestionList />
   </v-container>
 </template>
+
 <script>
-import Search from "../components/Search";
+import InputSearch from "../components/input-search";
 import QuestionList from "../components/question/list";
 
 export default {
   components: {
-    Search,
+    InputSearch,
     QuestionList
   }
 };
