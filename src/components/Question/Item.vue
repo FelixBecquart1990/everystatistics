@@ -175,9 +175,6 @@ export default {
         });
     }
   },
-  updated() {
-    console.log('updated??', this.question);
-  }
 };
 </script>
 
