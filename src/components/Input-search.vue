@@ -21,7 +21,7 @@
 <script>
 import firebase from "./../apis/firebase";
 import { find, save } from './../apis/algolia';
-import QuestionList from './question/list';
+import QuestionList from './Question/List';
 
 export default {
 

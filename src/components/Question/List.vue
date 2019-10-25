@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import QuestionItem from "./item";
+  import QuestionItem from "./Item";
 
   export default {
     data: () => ({ isLoading: true }),
