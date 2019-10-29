@@ -9,7 +9,6 @@ import vuetify from "./plugins/vuetify";
 import InstantSearch from 'vue-instantsearch';
 
 Vue.config.productionTip = false;
-store.dispatch("getQuestions");
 
 Vue.use(InstantSearch);
 

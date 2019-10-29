@@ -6,17 +6,10 @@ const client = algoliasearch(process.env.VUE_APP_ALGOLIA_APP_ID, process.env.VUE
  */
 export default client;
 
-
-/**
- * @name search
- * @description Search records of {collection} from Algolia for {value}
- * @param {*} collection The collection's name
- * @param {} value The string value to search
- */
-export async function find(collection, value = '') {
+export async function find(collection, { value = '', limit = 4 }) {
     const index = client.initIndex(collection);
     try {
-        const results = await index.search(value);
+        const results = await index.search(value, { hitsPerPage: limit });
         return deserialize(results.hits);
     }
     catch (error) {
@@ -24,15 +17,7 @@ export async function find(collection, value = '') {
     }
 }
 
-
-
-/**
- * @name search
- * @description Save on Algolia's API a new record of {collection}
- * @param {*} collection The collection's name
- * @param {} value The string value to save
- */
-export async function save(collection, value = '') {
+export async function save(collection, { value = '' }) {
     const index = client.initIndex(collection);
     try {
         const record = await index.saveObjects([serialize(value)]);
@@ -43,26 +28,20 @@ export async function save(collection, value = '') {
     }
 }
 
+export async function random(collection, { limit }) { return find(collection, { limit }) }
 
-/**
- * @name deserialize
- * @description Deserilize data from Algolia's API
- * @param {*} data
- */
 export function deserialize(data) {
     if(Array.isArray(data)) {
         return data.map(d => deserialize(d));
     }
 
+    if(Array.isArray(data.objectIDs)) {
+        return data.objectIDs.map(objectID => deserialize({ objectID, text: objectID }));
+    }
+
     return { ...{ id: data.objectID }, ...data };
 }
 
-
-/**
- * @name serialize
- * @description Serilize the text to Algolia's API
- * @param {*} text
- */
 export function serialize(text) {
     return { objectID: text, text };
 }

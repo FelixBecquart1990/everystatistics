@@ -22,22 +22,18 @@ firebase.initializeApp(config);
 
 export default firebase;
 
-
-
-/**
- * @name find
- * @description Find records of {collection} from Firebase for {value}
- * @param {*} collection The collection's name
- * @param {} value The string value to search
- */
-export async function find(collection, value = '') {
+export async function find(collection, { value = '', limit = 4 }) {
   try {
-    const results = await firebase.firestore()
+    let req = firebase.firestore()
       .collection(collection)
-      .orderBy("random", "asc")
-      .startAfter(Math.round(Math.random() * 69999999))
-      .limit(4)
-      .get();
+      .orderBy("random", "asc");
+
+    if(value !== '') {
+      req = req.where('text', '==', value);
+    }
+    
+    const results = await req.limit(limit).get();
+    console.log('results', results.docs);
     return deserialize(results.docs);
   }
 
@@ -46,11 +42,24 @@ export async function find(collection, value = '') {
   }
 }
 
-/**
- * @name deserialize
- * @description Deserilize data from Firebase's API
- * @param {*} data
- */
+export async function random(collection, { limit }) {
+  try {
+    const req = firebase.firestore()
+      .collection(collection)
+      .orderBy("random", "asc")
+      .limit(limit)
+      .startAfter(Math.round(Math.random() * 69999999));
+
+    const results = await req.get();
+
+    return deserialize(results.docs);
+  }
+
+  catch(error) {
+    throw `An error occured while requesting the collection '${collection}' from Firebase: ${error}`;
+  }
+}
+
 export function deserialize(data) {
   if(Array.isArray(data)) {
     return data.map(d => deserialize(d));

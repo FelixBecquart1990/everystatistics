@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import firebase from "./../../apis/firebase";
-import { find, save } from './../../apis/algolia';
 import QuestionList from './List';
 
 export default {
@@ -50,20 +48,14 @@ export default {
   },
 
   methods: {
-    /**
-     * @name onEnter
-     * @description Propagate the callback onSearch
-     */
+
     onEnter() {
       this.onSearch(this.text);
     },
 
-    /**
-     * @name onEscape
-     * @description Reset the input on esacpe
-     */
     onEscape() {
       this.search = '';
+      this.text = '';
       this.onSearch(this.search);
     },
   }

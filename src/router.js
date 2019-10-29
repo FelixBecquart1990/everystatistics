@@ -11,13 +11,10 @@ export default new Router({
     {
       name: "questions",
       path: "/",
-      component: QuestionsList
-    },
-    {
-      name: "questions.search",
-      path: "/questions/search/:search",
-      props: true,
-      component: QuestionsList
+      component: QuestionsList,
+      props: route => ({
+        keyword: route.query.keyword,
+      }),
     },
     {
       path: "*",

@@ -3,21 +3,15 @@
     <v-content class="backgrounder">
       <router-view />
     </v-content>
-    <Snackbar />
   </v-app>
 </template>
 
 <script>
-import Snackbar from "./components/Snackbar";
-
 export default {
   name: "App",
   data: () => ({
     //
   }),
-  components: {
-    Snackbar
-  }
 };
 </script>
 
