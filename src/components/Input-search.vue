@@ -13,15 +13,11 @@
         clearable
         :loading="loading"
       ></v-text-field>
-
-      <QuestionList :questions="results" columns="12" />
     </v-col>
   </v-sheet>
 </template>
 
 <script>
-import QuestionList from './List';
-
 export default {
 
   props: {
@@ -40,8 +36,6 @@ export default {
     loading: false,
     results: [],
   }),
-
-  components: { QuestionList },
 
   created() {
     this.text = this.value;

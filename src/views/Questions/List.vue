@@ -7,7 +7,7 @@
 
 <script>
 import { mapState } from "vuex";
-import InputSearch from "./../../components/Question/Input-search";
+import InputSearch from "./../../components/Input-search";
 import QuestionList from "./../../components/Question/List";
 
 export default {
